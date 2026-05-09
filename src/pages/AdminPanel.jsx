@@ -4,6 +4,7 @@ import AdminTransferHistory from './AdminTransferHistory'
 import AdminManageParts from './AdminManageParts'
 import AdminDailySummary from './AdminDailySummary'
 import AdminRecipients from './AdminRecipients'
+import AdminManageUsers from './AdminManageUsers'
 
 const TABS = [
   { id: 'pending', label: 'Pending', icon: '🕐' },
@@ -11,6 +12,7 @@ const TABS = [
   { id: 'parts', label: 'Parts', icon: '📦' },
   { id: 'daily', label: 'Daily', icon: '📤' },
   { id: 'recipients', label: 'Recipients', icon: '📬' },
+  { id: 'users', label: 'Users', icon: '👤', adminOnly: true },
 ]
 
 const TAB_TITLES = {
@@ -19,6 +21,7 @@ const TAB_TITLES = {
   parts: 'Manage Parts',
   daily: 'Daily Summary',
   recipients: 'Recipients',
+  users: 'Manage Users',
 }
 
 export default function AdminPanel({ user, onLogout }) {
@@ -53,6 +56,7 @@ export default function AdminPanel({ user, onLogout }) {
 
       {/* Content area */}
       <div style={styles.content}>
+        {activeTab === 'users' && user?.role === 'admin' && <AdminManageUsers />}
         {activeTab === 'pending' && <AdminPendingTransfers user={user} />}
         {activeTab === 'history' && <AdminTransferHistory />}
         {activeTab === 'parts' && <AdminManageParts />}
@@ -62,7 +66,7 @@ export default function AdminPanel({ user, onLogout }) {
 
       {/* Bottom nav */}
       <nav style={styles.bottomNav}>
-        {TABS.map(tab => (
+        {TABS.filter(tab => !tab.adminOnly || user?.role === 'admin').map(tab => (
           <button
             key={tab.id}
             style={activeTab === tab.id
