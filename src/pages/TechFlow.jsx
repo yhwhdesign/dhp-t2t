@@ -1,4 +1,6 @@
-import { techFlowStyles as styles } from '../styles';
+import { techFlowStyles, shared, BG_URL, LOGO_URL } from '../styles'
+const styles = { ...shared, ...techFlowStyles }
+
 import { useState } from 'react'
 import StartTransfer from './StartTransfer'
 import WarehouseReturn from './WarehouseReturn'

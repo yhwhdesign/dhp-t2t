@@ -1,4 +1,6 @@
-import { warehouseReturnStyles as styles } from '../styles';
+import { warehouseReturnStyles, shared } from '../styles'
+const styles = { ...shared, ...warehouseReturnStyles }
+
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { generateTransferPDF } from '../lib/generatePDF';

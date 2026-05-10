@@ -1,4 +1,5 @@
-import { partPreviewStyles as styles } from '../styles'
+import { partPreviewStyles, shared } from '../styles'
+const styles = { ...shared, ...partPreviewStyles }
 
 export default function PartPreviewModal({ part, quantity, onQuantityChange, onConfirm, onCancel }) {
   if (!part) return null

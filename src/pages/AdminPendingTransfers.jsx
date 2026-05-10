@@ -1,4 +1,6 @@
-import { pendingStyles as styles } from '../styles';
+import { pendingStyles, shared } from '../styles'
+const styles = { ...shared, ...pendingStyles }
+
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { generateTransferPDF } from '../lib/generatePDF';

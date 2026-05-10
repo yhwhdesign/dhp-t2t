@@ -1,4 +1,6 @@
-import { managePartsStyles as styles } from '../styles';
+import { managePartsStyles, shared } from '../styles'
+const styles = { ...shared, ...managePartsStyles }
+
 import { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
 import { supabase } from '../lib/supabase';

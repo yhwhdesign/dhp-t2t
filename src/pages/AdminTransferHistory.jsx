@@ -1,4 +1,6 @@
-import { historyStyles as styles } from '../styles';
+import { historyStyles, shared } from '../styles'
+const styles = { ...shared, ...historyStyles }
+
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 

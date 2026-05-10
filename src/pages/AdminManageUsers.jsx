@@ -1,4 +1,6 @@
-import { manageUsersStyles as styles } from '../styles';
+import { manageUsersStyles, shared } from '../styles'
+const styles = { ...shared, ...manageUsersStyles }
+
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 

@@ -1,4 +1,6 @@
-import { recipientsStyles as styles } from '../styles';
+import { recipientsStyles, shared } from '../styles'
+const styles = { ...shared, ...recipientsStyles }
+
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 

@@ -1,4 +1,6 @@
-import { startTransferStyles as styles } from '../styles';
+import { startTransferStyles, shared } from '../styles'
+const styles = { ...shared, ...startTransferStyles }
+
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { generateTransferPDF } from '../lib/generatePDF';

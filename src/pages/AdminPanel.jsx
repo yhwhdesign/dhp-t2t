@@ -1,4 +1,6 @@
-import { adminPanelStyles as styles } from '../styles';
+import { adminPanelStyles, shared, LOGO_URL } from '../styles'
+const styles = { ...shared, ...adminPanelStyles }
+
 import { useState } from 'react'
 import AdminPendingTransfers from './AdminPendingTransfers'
 import AdminTransferHistory from './AdminTransferHistory'

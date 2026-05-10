@@ -1,4 +1,6 @@
-import { dailyStyles as styles } from '../styles';
+import { dailyStyles, shared } from '../styles'
+const styles = { ...shared, ...dailyStyles }
+
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { generateCombinedPDF } from '../lib/generatePDF'

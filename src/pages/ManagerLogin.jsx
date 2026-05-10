@@ -1,4 +1,6 @@
-import { managerLoginStyles as styles } from '../styles';
+import { managerLoginStyles, shared, BG_URL, LOGO_URL } from '../styles'
+const styles = { ...shared, ...managerLoginStyles }
+
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
 

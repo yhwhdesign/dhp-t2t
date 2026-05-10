@@ -1,4 +1,5 @@
-import { landingStyles as styles } from '../styles';
+import { landingStyles, shared, BG_URL, LOGO_URL } from '../styles'
+const styles = { ...shared, ...landingStyles }
 
 export default function LandingScreen({ onTech, onManager }) {
   return (
