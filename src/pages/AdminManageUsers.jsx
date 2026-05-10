@@ -1,3 +1,4 @@
+import { manageUsersStyles as styles } from '../styles';
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 
@@ -275,88 +276,4 @@ export default function AdminManageUsers() {
       </p>
     </div>
   )
-}
-
-const styles = {
-  container: { padding: '8px 0' },
-  titleRow: {
-    display: 'flex', justifyContent: 'space-between',
-    alignItems: 'flex-start', marginBottom: 16, gap: 12, flexWrap: 'wrap',
-  },
-  subtitle: { fontSize: 13, color: '#666', margin: 0, flex: 1 },
-  addBtn: {
-    padding: '9px 16px', background: '#1a1a2e', color: '#fff',
-    border: 'none', borderRadius: 8, fontSize: 13,
-    fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap',
-  },
-  searchInput: {
-    width: '100%', padding: '9px 12px', borderRadius: 8,
-    border: '1.5px solid #ddd', fontSize: 13, outline: 'none',
-    fontFamily: 'inherit', marginBottom: 16, boxSizing: 'border-box',
-  },
-  addForm: {
-    background: '#f8f9fb', border: '1.5px solid #e8eaed',
-    borderRadius: 10, padding: 16, marginBottom: 20,
-  },
-  addFormTitle: { fontSize: 14, fontWeight: 700, color: '#1a1a2e', marginTop: 0, marginBottom: 12 },
-  formRow: { display: 'flex', gap: 12, marginBottom: 12, flexWrap: 'wrap' },
-  formField: { flex: 1, minWidth: 140 },
-  label: { display: 'block', fontSize: 12, fontWeight: 600, color: '#666', marginBottom: 4 },
-  input: {
-    width: '100%', padding: '8px 10px', borderRadius: 7,
-    border: '1.5px solid #ddd', fontSize: 13, boxSizing: 'border-box',
-    fontFamily: 'inherit', outline: 'none', background: '#fff',
-  },
-  errorBox: {
-    background: '#fee2e2', color: '#dc2626',
-    borderRadius: 8, padding: '8px 12px', fontSize: 13, marginBottom: 12,
-  },
-  empty: { padding: 40, textAlign: 'center', color: '#aaa', fontSize: 14 },
-  list: { display: 'flex', flexDirection: 'column', gap: 8 },
-  card: {
-    background: '#fff', border: '1.5px solid #e8eaed',
-    borderRadius: 10, padding: '14px 16px',
-    boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-  },
-  viewMode: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap' },
-  cardLeft: { display: 'flex', alignItems: 'center', gap: 12 },
-  avatar: {
-    width: 40, height: 40, borderRadius: '50%',
-    background: '#1a1a2e', color: '#fff',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    fontSize: 16, fontWeight: 700, flexShrink: 0,
-  },
-  userInfo: { display: 'flex', flexDirection: 'column', gap: 2 },
-  nameRow: { display: 'flex', alignItems: 'center', gap: 8 },
-  userName: { fontSize: 14, fontWeight: 700, color: '#1a1a2e' },
-  roleBadge: {
-    fontSize: 10, fontWeight: 700, padding: '2px 8px',
-    borderRadius: 20, textTransform: 'uppercase', letterSpacing: '0.05em',
-  },
-  userEmail: { fontSize: 12, color: '#888' },
-  userPin: { fontSize: 11, color: '#bbb' },
-  cardActions: { display: 'flex', gap: 8, flexShrink: 0 },
-  editBtn: {
-    padding: '6px 12px', background: '#f0f2f5', color: '#1a1a2e',
-    border: 'none', borderRadius: 7, fontSize: 12, fontWeight: 700, cursor: 'pointer',
-  },
-  deactivateBtn: {
-    padding: '6px 12px', background: '#fee2e2', color: '#dc2626',
-    border: 'none', borderRadius: 7, fontSize: 12, fontWeight: 700, cursor: 'pointer',
-  },
-  activateBtn: {
-    padding: '6px 12px', background: '#e8f5e9', color: '#2d6a4f',
-    border: 'none', borderRadius: 7, fontSize: 12, fontWeight: 700, cursor: 'pointer',
-  },
-  editMode: { display: 'flex', flexDirection: 'column' },
-  editActions: { display: 'flex', gap: 8, marginTop: 4 },
-  saveBtn: {
-    padding: '8px 16px', background: '#2d6a4f', color: '#fff',
-    border: 'none', borderRadius: 7, fontSize: 13, fontWeight: 700, cursor: 'pointer',
-  },
-  cancelEditBtn: {
-    padding: '8px 16px', background: '#f0f2f5', color: '#555',
-    border: 'none', borderRadius: 7, fontSize: 13, fontWeight: 700, cursor: 'pointer',
-  },
-  hint: { marginTop: 16, fontSize: 12, color: '#888', textAlign: 'center', fontStyle: 'italic' },
 }

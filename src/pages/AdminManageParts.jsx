@@ -1,3 +1,4 @@
+import { managePartsStyles as styles } from '../styles';
 import { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
 import { supabase } from '../lib/supabase';
@@ -252,89 +253,4 @@ export default function AdminManageParts() {
       )}
     </div>
   );
-}
-
-const styles = {
-  container: { padding: '8px 0' },
-  titleRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16, gap: 12, flexWrap: 'wrap' },
-  subtitle: { fontSize: 13, color: '#666', margin: 0 },
-  generateAllBtn: {
-    padding: '10px 16px', background: '#2d6a4f', color: '#fff',
-    border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap',
-  },
-  loading: { padding: 40, textAlign: 'center', color: '#888' },
-  empty: { padding: 40, textAlign: 'center', color: '#aaa', fontSize: 14 },
-  toolbar: { display: 'flex', gap: 10, marginBottom: 16, alignItems: 'center' },
-  searchInput: {
-    flex: 1, padding: '9px 12px', borderRadius: 8,
-    border: '1.5px solid #ddd', fontSize: 13, outline: 'none', fontFamily: 'inherit',
-  },
-  addBtn: {
-    padding: '9px 16px', background: '#1a1a2e', color: '#fff',
-    border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap',
-  },
-  addForm: {
-    background: '#f8f9fb', border: '1.5px solid #e8eaed',
-    borderRadius: 10, padding: 16, marginBottom: 20,
-  },
-  addFormTitle: { fontSize: 14, fontWeight: 700, color: '#1a1a2e', marginTop: 0, marginBottom: 12 },
-  formRow: { display: 'flex', gap: 12, marginBottom: 12 },
-  formField: { flex: 1, marginBottom: 12 },
-  label: { display: 'block', fontSize: 12, fontWeight: 600, color: '#666', marginBottom: 4 },
-  input: {
-    width: '100%', padding: '8px 10px', borderRadius: 7,
-    border: '1.5px solid #ddd', fontSize: 13, boxSizing: 'border-box', fontFamily: 'inherit', outline: 'none',
-  },
-  photoUploadRow: { display: 'flex', alignItems: 'center', gap: 12 },
-  photoUploadBtn: {
-    padding: '8px 14px', background: '#f0f2f5', color: '#1a1a2e',
-    border: '1.5px solid #ddd', borderRadius: 7, fontSize: 12, fontWeight: 600, cursor: 'pointer',
-  },
-  photoThumb: { width: 48, height: 48, borderRadius: 6, objectFit: 'cover', border: '1px solid #ddd' },
-  errorBox: { background: '#fee2e2', color: '#dc2626', borderRadius: 8, padding: '8px 12px', fontSize: 13, marginBottom: 12 },
-  partsList: { display: 'flex', flexDirection: 'column', gap: 8 },
-  partRow: {
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    background: '#fff', border: '1.5px solid #e8eaed', borderRadius: 10, padding: '10px 16px',
-    boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-  },
-  partLeft: { display: 'flex', alignItems: 'center', gap: 12 },
-  partThumbBox: { width: 36, height: 36, borderRadius: 6, overflow: 'hidden', border: '1px solid #eee', flexShrink: 0 },
-  partThumb: { width: '100%', height: '100%', objectFit: 'cover' },
-  partThumbPlaceholder: {
-    width: 36, height: 36, borderRadius: 6, background: '#f0f2f5',
-    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0,
-  },
-  partInfo: { display: 'flex', flexDirection: 'column', gap: 2 },
-  partNumber: { fontWeight: 700, fontSize: 14, color: '#1a1a2e' },
-  partDesc: { fontSize: 12, color: '#888' },
-  qrBtn: {
-    padding: '7px 14px', background: '#f0f2f5', color: '#1a1a2e',
-    border: 'none', borderRadius: 7, fontSize: 12, fontWeight: 700, cursor: 'pointer',
-  },
-  overlay: {
-    position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
-    display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16,
-  },
-  modal: {
-    background: '#fff', borderRadius: 14, padding: '24px 20px',
-    width: '100%', maxWidth: 380, maxHeight: '90vh', overflowY: 'auto',
-    boxShadow: '0 8px 40px rgba(0,0,0,0.2)',
-  },
-  modalHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
-  modalTitle: { fontSize: 18, fontWeight: 800, color: '#1a1a2e', margin: 0 },
-  closeBtn: { background: 'none', border: 'none', fontSize: 18, color: '#999', cursor: 'pointer', padding: 0 },
-  modalDesc: { fontSize: 13, color: '#666', marginBottom: 16, marginTop: 4 },
-  qrPreviewBox: { display: 'flex', justifyContent: 'center', background: '#f8f9fb', borderRadius: 10, padding: 16, marginBottom: 8 },
-  qrImage: { width: 160, height: 160 },
-  qrLoading: { color: '#aaa', fontSize: 13, padding: 40 },
-  qrHint: { fontSize: 11, color: '#aaa', textAlign: 'center', marginBottom: 16 },
-  labelPreview: { background: '#f8f9fb', border: '1px solid #e8eaed', borderRadius: 10, padding: '12px 14px', marginBottom: 16 },
-  labelPreviewTitle: { fontSize: 11, fontWeight: 700, color: '#888', marginBottom: 8 },
-  singleLabelPreviewBox: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 },
-  labelPartNumber: { textAlign: 'center', fontSize: 11, fontWeight: 700, color: '#1a1a2e' },
-  printBtn: {
-    width: '100%', padding: '12px', background: '#1a1a2e', color: '#fff',
-    border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: 'pointer',
-  },
 }

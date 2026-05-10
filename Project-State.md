@@ -37,7 +37,7 @@ left off."
 - NO Google Sheets — removed from stack, Supabase handles all data
 
 ## Supabase tables (all created and confirmed working)
-- users — id, name, email, pin, role (tech or manager), active, created_at
+- users — id, name, email, pin, role (tech, manager, or admin), active, created_at
 - parts — id, part_number, description, qr_data, photo_url, created_at
 - transfers — id, warehouse_number, tech_id, tech_name, notes, status, pdf_url, actioned_by, created_at
 - transfer_items — id, transfer_id, part_id, part_number, description, quantity, created_at
@@ -70,8 +70,16 @@ left off."
   approved today and emails them to all active recipients in one email
 - Manager can add optional notes to the daily summary email before sending
 
+## User roles
+- admin — full access including Manage Users tab, can add/edit/deactivate all users
+- manager — access to all admin panel tabs except Manage Users
+- tech — access to tech flow only (warehouse number entry, transfer or return)
+- Login: admin and manager use email + PIN via ManagerLogin.jsx
+  (.in('role', ['manager', 'admin']) query)
+- Login: techs enter warehouse number only via TechFlow.jsx
+
 ## Test accounts in Supabase
-- admin@dhp.com / PIN: 1234 / role: manager / name: Admin User
+- admin@dhp.com / PIN: 1234 / role: admin / name: Admin User
 - tech@dhp.com / PIN: 5678 / role: tech / name: Test Tech
 
 ## Test parts in Supabase
@@ -84,7 +92,8 @@ left off."
 - [X] Stage 4 — Admin panel: QR code generator + print PDF. COMPLETE.
 - [X] Stage 5 — Admin panel: Transfer History + Recipients + Resend email. COMPLETE.
 - [X] Stage 5b — Daily Summary tab with combined PDF email. COMPLETE.
-- [ ] Stage 6 — Polish, error handling, mobile optimization, PWA, Manage Users. IN PROGRESS.
+- [X] Stage 5c — Manage Users tab (admin only). COMPLETE.
+- [ ] Stage 6 — Polish, error handling, mobile optimization, PWA. IN PROGRESS.
 - [ ] Stage 7 — Deploy to Vercel. NOT STARTED.
 
 ## External services
@@ -123,7 +132,7 @@ dhp-t2t/
 │   ├── pages/
 │   │   ├── LandingScreen.jsx         ← Branded landing: Tech or Management choice
 │   │   ├── TechFlow.jsx              ← Tech: enter warehouse # → Transfer or Return
-│   │   ├── ManagerLogin.jsx          ← Manager: email + PIN login
+│   │   ├── ManagerLogin.jsx          ← Manager/Admin: email + PIN login
 │   │   ├── StartTransfer.jsx         ← Truck transfer form (warehouse # pre-filled)
 │   │   ├── WarehouseReturn.jsx       ← Return form (warehouse # pre-filled)
 │   │   ├── AdminPanel.jsx            ← Manager panel with bottom nav
@@ -131,8 +140,9 @@ dhp-t2t/
 │   │   ├── AdminTransferHistory.jsx  ← History: approved + cancelled, expandable
 │   │   ├── AdminManageParts.jsx      ← Parts list + add + QR generator + print
 │   │   ├── AdminRecipients.jsx       ← Recipients CRUD + active toggle
-│   │   └── AdminDailySummary.jsx     ← Daily summary + combined PDF email
-│   ├── App.jsx                       ← Routes: landing → tech or manager flow
+│   │   ├── AdminDailySummary.jsx     ← Daily summary + combined PDF email
+│   │   └── AdminManageUsers.jsx      ← Admin only: add/edit/deactivate all users
+│   ├── App.jsx                       ← Routes: landing → tech or manager/admin flow
 │   └── index.css                     ← Global reset styles
 ├── index.html                        ← viewport meta: user-scalable=no (zoom fix)
 ├── vite.config.js                    ← HTTPS enabled via @vitejs/plugin-basic-ssl
@@ -144,8 +154,8 @@ dhp-t2t/
   two cards — Field Technician and Management
 - Tech flow: enter warehouse number once → two buttons: Transfer to Truck / Return to Warehouse
   warehouse number is pre-filled in both forms, not shown again
-- Manager flow: email + PIN login → admin panel with premium bottom nav
-- Bottom nav icons: 🕐 Pending / 🗂 History / 📦 Parts / 📤 Daily / 📬 Recipients
+- Manager/Admin flow: email + PIN login → admin panel with premium bottom nav
+- Bottom nav icons: 🕐 Pending / 🗂 History / 📦 Parts / 📤 Daily / 📬 Recipients / 👤 Users (admin only)
 - Part search: live debounced search as tech types (500ms), modal on match
 - QR scan also triggers part confirmation modal on match
 - Modal shows part photo (or placeholder), part # and description, quantity +/- selector
@@ -161,17 +171,21 @@ dhp-t2t/
 - Mobile viewport fixed: user-scalable=no prevents unwanted zoom
 - HTTPS dev server enabled for phone QR testing via @vitejs/plugin-basic-ssl
 - Supabase CLI installed via Homebrew (sudo npm install -g failed on Mac)
+- Manage Users tab visible to admin role only, hidden from manager role
 
 ## Admin Panel tabs — build status
 - [X] Pending Transfers — fully built and working (no email on approve)
 - [X] Transfer History — fully built and working
 - [X] Manage Parts — fully built and working
 - [X] Daily Summary — fully built and working
-- [ ] Manage Users — not yet built (Stage 6)
+- [X] Manage Users — fully built, admin only
 - [X] Recipients — fully built and working
 
 ## Stage 6 — remaining work
-- [ ] Manage Users tab — add/deactivate users, manager-only
+- [ ] Consolidate all CSS into one global stylesheet (src/styles.js or styles.css)
+      — commented by page and section, replacing all inline style objects in every .jsx file
+- [ ] Build page commentary doc (PAGES.md) — one entry per page describing what it does
+      and what each section/function handles
 - [ ] Bulk parts import from Excel/Google Sheets (generates QR codes automatically)
 - [ ] PWA support — Add to Home Screen on iOS/Android
 - [ ] Pre-deployment checklist and .gitignore review
@@ -202,3 +216,4 @@ dhp-t2t/
 - Background image URL: https://www.dhpace.com/wp-content/uploads/2017/11/distribution-logistics-doors.jpg
 - Resend free plan limit: 100 emails/day, sends only to verified email until domain verified
 - Phone testing requires HTTPS — use Network URL from npm run dev output
+- CSS consolidation and PAGES.md doc are the final two polish tasks before deployment prep

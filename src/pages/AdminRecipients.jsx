@@ -1,3 +1,4 @@
+import { recipientsStyles as styles } from '../styles';
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 
@@ -116,44 +117,4 @@ export default function AdminRecipients() {
       )}
     </div>
   )
-}
-
-const styles = {
-  container: { padding: '8px 0' },
-  titleRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16, gap: 12, flexWrap: 'wrap' },
-  subtitle: { fontSize: 13, color: '#666', margin: 0, flex: 1 },
-  addBtn: {
-    padding: '9px 16px', background: '#1a1a2e', color: '#fff',
-    border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap',
-  },
-  addForm: { background: '#f8f9fb', border: '1.5px solid #e8eaed', borderRadius: 10, padding: 16, marginBottom: 20 },
-  addFormTitle: { fontSize: 14, fontWeight: 700, color: '#1a1a2e', marginTop: 0, marginBottom: 12 },
-  formRow: { display: 'flex', gap: 12, marginBottom: 12, flexWrap: 'wrap' },
-  formField: { flex: 1, minWidth: 180 },
-  label: { display: 'block', fontSize: 12, fontWeight: 600, color: '#666', marginBottom: 4 },
-  input: {
-    width: '100%', padding: '8px 10px', borderRadius: 7,
-    border: '1.5px solid #ddd', fontSize: 13, boxSizing: 'border-box', fontFamily: 'inherit', outline: 'none',
-  },
-  errorBox: { background: '#fee2e2', color: '#dc2626', borderRadius: 8, padding: '8px 12px', fontSize: 13, marginBottom: 12 },
-  empty: { padding: 40, textAlign: 'center', color: '#aaa', fontSize: 14 },
-  list: { display: 'flex', flexDirection: 'column', gap: 8 },
-  row: {
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    background: '#fff', border: '1.5px solid #e8eaed', borderRadius: 10, padding: '12px 16px',
-    boxShadow: '0 1px 4px rgba(0,0,0,0.04)', flexWrap: 'wrap', gap: 10,
-  },
-  rowLeft: { display: 'flex', alignItems: 'center', gap: 12 },
-  avatar: {
-    width: 38, height: 38, borderRadius: '50%', background: '#1a1a2e', color: '#fff',
-    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700, flexShrink: 0,
-  },
-  rowInfo: { display: 'flex', flexDirection: 'column', gap: 2 },
-  rowName: { fontSize: 14, fontWeight: 700, color: '#1a1a2e' },
-  rowEmail: { fontSize: 12, color: '#888' },
-  rowRight: { display: 'flex', alignItems: 'center', gap: 8 },
-  activeToggle: { padding: '5px 12px', background: '#e8f5e9', color: '#2d6a4f', border: 'none', borderRadius: 20, fontSize: 12, fontWeight: 700, cursor: 'pointer' },
-  inactiveToggle: { padding: '5px 12px', background: '#f0f2f5', color: '#999', border: 'none', borderRadius: 20, fontSize: 12, fontWeight: 700, cursor: 'pointer' },
-  deleteBtn: { background: '#fee2e2', border: 'none', borderRadius: 7, padding: '5px 9px', cursor: 'pointer', fontSize: 14 },
-  hint: { marginTop: 16, fontSize: 12, color: '#888', textAlign: 'center', fontStyle: 'italic' },
 }

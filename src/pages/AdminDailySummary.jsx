@@ -1,3 +1,4 @@
+import { dailyStyles as styles } from '../styles';
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { generateCombinedPDF } from '../lib/generatePDF'
@@ -233,49 +234,4 @@ export default function AdminDailySummary({ user }) {
       )}
     </div>
   )
-}
-
-const styles = {
-  container: { padding: '8px 0' },
-  titleRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, gap: 12 },
-  subtitle: { fontSize: 13, color: '#666', margin: 0 },
-  refreshBtn: {
-    padding: '8px 14px', background: '#f0f2f5', color: '#1a1a2e',
-    border: '1.5px solid #ddd', borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer',
-  },
-  cardRow: { display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' },
-  summaryCard: {
-    flex: 1, minWidth: 140, background: '#fff', border: '1.5px solid #e8eaed',
-    borderRadius: 10, padding: '16px', display: 'flex', flexDirection: 'column',
-    alignItems: 'center', gap: 4, boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-  },
-  cardCount: { fontSize: 36, fontWeight: 800, color: '#1a1a2e', lineHeight: 1 },
-  cardLabel: { fontSize: 13, fontWeight: 700, color: '#333', textAlign: 'center' },
-  cardSub: { fontSize: 11, color: '#aaa' },
-  section: { marginBottom: 20 },
-  sectionLabel: {
-    fontSize: 11, fontWeight: 700, color: '#888',
-    textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8, marginTop: 0,
-  },
-  recordRow: {
-    display: 'flex', alignItems: 'center', gap: 10,
-    background: '#fff', border: '1.5px solid #e8eaed', borderRadius: 8,
-    padding: '10px 14px', marginBottom: 6, flexWrap: 'wrap',
-  },
-  recordTech: { fontWeight: 700, fontSize: 13, color: '#1a1a2e', flex: 1 },
-  recordWH: { fontSize: 12, color: '#555', background: '#f0f2f5', borderRadius: 6, padding: '2px 8px' },
-  recordItems: { fontSize: 12, color: '#888' },
-  notesSection: { marginBottom: 16 },
-  notesLabel: { display: 'block', fontSize: 12, fontWeight: 600, color: '#666', marginBottom: 6 },
-  notesInput: {
-    width: '100%', padding: '10px 12px', borderRadius: 8,
-    border: '1.5px solid #ddd', fontSize: 13, boxSizing: 'border-box',
-    fontFamily: 'inherit', outline: 'none', resize: 'vertical',
-  },
-  statusMsg: { borderRadius: 8, padding: '10px 14px', fontSize: 13, marginBottom: 12 },
-  sendBtn: {
-    width: '100%', padding: '13px', background: '#1a1a2e', color: '#fff',
-    border: 'none', borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: 'pointer',
-  },
-  empty: { padding: 40, textAlign: 'center', color: '#aaa', fontSize: 14 },
 }
