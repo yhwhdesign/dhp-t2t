@@ -1,12 +1,15 @@
 import { managePartsStyles, shared } from '../styles'
 const styles = { ...shared, ...managePartsStyles }
 
+import { logActivity } from '../lib/activityLog'
+import PartPhotoPlaceholder from '../components/PartPhotoPlaceholder';
 import { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
 import { supabase } from '../lib/supabase';
 import { generateSingleLabelPDF, generateAllLabelsPDF } from '../lib/generateLabelPDF';
 
 export default function AdminManageParts() {
+  const [duplicateWarning, setDuplicateWarning] = useState(null)
   const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -37,22 +40,52 @@ export default function AdminManageParts() {
     setPhotoPreview(URL.createObjectURL(file));
   }
 
-  async function handleAddPart() {
-    setAddError('');
-    if (!newPart.part_number.trim()) { setAddError('Part number is required.'); return; }
-    if (!newPart.qr_data.trim()) { setAddError('QR data is required.'); return; }
+    async function handleAddPart() {
+    setAddError('')
+    if (!newPart.part_number.trim()) { setAddError('Part number is required.'); return }
+    if (!newPart.qr_data.trim()) { setAddError('QR data is required.'); return }
 
-    setAdding(true);
+    // Check for duplicate part number
+    const { data: existing } = await supabase
+      .from('parts')
+      .select('*')
+      .ilike('part_number', newPart.part_number.trim())
+      .single()
+
+    if (existing) {
+      if (!duplicateWarning) {
+        setDuplicateWarning(existing)
+        return
+      }
+      // If they confirmed, log it and block the insert
+      await logActivity({
+        action: 'duplicate attempted',
+        entity: 'part',
+        entityId: newPart.part_number.trim().toUpperCase(),
+        details: {
+          part_number: newPart.part_number.trim().toUpperCase(),
+          description: newPart.description.trim(),
+          note: 'Manager attempted to add duplicate part number — blocked by system',
+        },
+        performedBy: 'Manager',
+      })
+      setAddError(`Part number ${existing.part_number} already exists in the system. The attempt has been logged.`)
+      setDuplicateWarning(null)
+      return
+    }
+
+    setAdding(true)
+    setDuplicateWarning(null)
     try {
-      let photo_url = null;
+      let photo_url = null
       if (photoFile) {
-        const ext = photoFile.name.split('.').pop();
-        const fileName = `parts/${newPart.part_number.trim().toUpperCase()}_${Date.now()}.${ext}`;
+        const ext = photoFile.name.split('.').pop()
+        const fileName = `parts/${newPart.part_number.trim().toUpperCase()}_${Date.now()}.${ext}`
         const { error: uploadError } = await supabase.storage
           .from('transfer-pdfs')
-          .upload(fileName, photoFile, { contentType: photoFile.type, upsert: true });
-        if (uploadError) throw new Error(`Photo upload failed: ${uploadError.message}`);
-        photo_url = fileName;
+          .upload(fileName, photoFile, { contentType: photoFile.type, upsert: true })
+        if (uploadError) throw new Error(`Photo upload failed: ${uploadError.message}`)
+        photo_url = fileName
       }
 
       const { error } = await supabase.from('parts').insert({
@@ -60,18 +93,50 @@ export default function AdminManageParts() {
         description: newPart.description.trim(),
         qr_data: newPart.qr_data.trim().toUpperCase(),
         photo_url,
-      });
-      if (error) throw error;
+      })
+      if (error) throw error
 
-      setNewPart({ part_number: '', description: '', qr_data: '' });
-      setPhotoFile(null);
-      setPhotoPreview('');
-      setShowAddForm(false);
-      await fetchParts();
+      await logActivity({
+        action: existing ? 'duplicate added' : 'part added',
+        entity: 'part',
+        entityId: newPart.part_number.trim().toUpperCase(),
+        details: {
+          part_number: newPart.part_number.trim().toUpperCase(),
+          description: newPart.description.trim(),
+          note: existing ? 'Added despite duplicate warning' : null,
+        },
+        performedBy: 'Manager',
+      })
+
+      setNewPart({ part_number: '', description: '', qr_data: '' })
+      setPhotoFile(null)
+      setPhotoPreview('')
+      setShowAddForm(false)
+      await fetchParts()
     } catch (e) {
-      setAddError(`Failed to add part: ${e.message}`);
+      setAddError(`Failed to add part: ${e.message}`)
     } finally {
-      setAdding(false);
+      setAdding(false)
+    }
+  }
+
+  async function handleDeletePart(part) {
+    if (!window.confirm(`Delete ${part.part_number}? This cannot be undone.`)) return
+    try {
+      await supabase.from('parts').delete().eq('id', part.id)
+      await logActivity({
+        action: 'part deleted',
+        entity: 'part',
+        entityId: part.part_number,
+        details: {
+          part_number: part.part_number,
+          description: part.description,
+        },
+        performedBy: 'Manager',
+      })
+      await fetchParts()
+    } catch (e) {
+      alert(`Failed to delete part: ${e.message}`)
     }
   }
 
@@ -184,13 +249,41 @@ export default function AdminManageParts() {
               {photoPreview && <img src={photoPreview} alt="preview" style={styles.photoThumb} />}
             </div>
           </div>
-          <button
-            style={{ ...styles.addBtn, marginTop: 12, opacity: adding ? 0.6 : 1 }}
-            onClick={handleAddPart}
-            disabled={adding}
-          >
-            {adding ? 'Saving...' : 'Save Part'}
-          </button>
+          {duplicateWarning && (
+  <div style={styles.duplicateWarning}>
+    <p style={styles.duplicateTitle}>⚠️ Duplicate Part Number</p>
+    <p style={styles.duplicateText}>
+      <strong>{duplicateWarning.part_number}</strong> already exists
+      {duplicateWarning.description ? ` — ${duplicateWarning.description}` : ''}.
+      Are you sure you want to add another?
+    </p>
+    <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+      <button
+  style={{ ...styles.addBtn, background: '#dc2626', flex: 1 }}
+  onClick={handleAddPart}
+  disabled={adding}
+>
+  I understand, proceed
+</button>
+      <button
+        style={{ ...styles.addBtn, background: '#888', flex: 1 }}
+        onClick={() => setDuplicateWarning(null)}
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+)}
+
+          {!duplicateWarning && (
+            <button
+              style={{ ...styles.addBtn, marginTop: 12, opacity: adding ? 0.6 : 1 }}
+              onClick={handleAddPart}
+              disabled={adding}
+            >
+              {adding ? 'Saving...' : 'Save Part'}
+            </button>
+          )}
         </div>
       )}
 
@@ -203,19 +296,31 @@ export default function AdminManageParts() {
           {filtered.map(part => (
             <div key={part.id} style={styles.partRow}>
               <div style={styles.partLeft}>
-                {part.photo_url ? (
-                  <div style={styles.partThumbBox}>
-                    <img src={part.photo_url} alt="" style={styles.partThumb} />
-                  </div>
-                ) : (
-                  <div style={styles.partThumbPlaceholder}>🔩</div>
-                )}
+                <label style={{ cursor: 'pointer', flexShrink: 0 }}>
+                  {part.photo_url ? (
+                    <div style={styles.partThumbBox}>
+                      <img src={part.photo_url} alt="" style={styles.partThumb} />
+                    </div>
+                  ) : (
+                    <PartPhotoPlaceholder size="small" />
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={e => handleUpdatePhoto(part, e.target.files[0])}
+                  />
+                </label>
                 <div style={styles.partInfo}>
                   <span style={styles.partNumber}>{part.part_number}</span>
                   {part.description && <span style={styles.partDesc}>{part.description}</span>}
+                  <span style={styles.photoHint}>Tap photo to change</span>
                 </div>
               </div>
-              <button style={styles.qrBtn} onClick={() => handleOpenQR(part)}>QR Code</button>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button style={styles.qrBtn} onClick={() => handleOpenQR(part)}>QR Code</button>
+                <button style={styles.deletePartBtn} onClick={() => handleDeletePart(part)}>🗑</button>
+              </div>
             </div>
           ))}
         </div>

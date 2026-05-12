@@ -42,5 +42,3 @@ export default function LandingScreen({ onTech, onManager }) {
     </div>
   )
 }
-
-const BG_URL = 'https://www.dhpace.com/wp-content/uploads/2017/11/distribution-logistics-doors.jpg'

@@ -1,11 +1,13 @@
 import { techFlowStyles, shared, BG_URL, LOGO_URL } from '../styles'
-const styles = { ...shared, ...techFlowStyles }
+const styles = { ...shared, ...techFlowStyles, 
+  root: shared.bgRoot,
+  overlay: shared.bgOverlay,
+  content: shared.bgContent,
+}
 
 import { useState } from 'react'
 import StartTransfer from './StartTransfer'
 import WarehouseReturn from './WarehouseReturn'
-
-const BG_URL = 'https://www.dhpace.com/wp-content/uploads/2017/11/distribution-logistics-doors.jpg'
 
 export default function TechFlow({ onBack }) {
   const [screen, setScreen] = useState('home')

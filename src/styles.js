@@ -1208,6 +1208,18 @@ export const adminPanelStyles = {
     background: '#1a1a2e',
     borderRadius: '0 0 3px 3px',
   },
+
+  // Adding in log for changes and deletions
+  logBtn: {
+    background: '#f5f6fa',
+    border: '1px solid #e8eaed',
+    borderRadius: 8,
+    padding: '6px 12px',
+    fontSize: 12,
+    fontWeight: 700,
+    color: '#555',
+    cursor: 'pointer',
+  },
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -1652,6 +1664,13 @@ export const managePartsStyles = {
     border: '1px solid #ddd',
   },
 
+  // Photo hint
+  photoHint: {
+    fontSize: 10,
+    color: '#aaa',
+    fontStyle: 'italic',
+  },
+
   // Parts list container
   partsList: { display: 'flex', flexDirection: 'column', gap: 8 },
 
@@ -1791,6 +1810,34 @@ export const managePartsStyles = {
     fontWeight: 700,
     cursor: 'pointer',
   },
+
+  duplicateWarning: {
+  background: '#fef3c7',
+  border: '1.5px solid #f59e0b',
+  borderRadius: 8,
+  padding: '12px 14px',
+  marginTop: 8,
+},
+duplicateTitle: {
+  fontSize: 13,
+  fontWeight: 700,
+  color: '#92400e',
+  margin: '0 0 4px',
+},
+duplicateText: {
+  fontSize: 13,
+  color: '#78350f',
+  margin: 0,
+},
+  deletePartBtn: {
+    padding: '7px 10px',
+    background: '#fee2e2',
+    color: '#dc2626',
+    border: 'none',
+    borderRadius: 7,
+    fontSize: 13,
+    cursor: 'pointer',
+  }
 }
 
 // ─────────────────────────────────────────────────────────────

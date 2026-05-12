@@ -118,6 +118,10 @@ export default function AdminDailySummary({ user }) {
       const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
       const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
+      // logging errors
+      console.log('Supabase URL:', supabaseUrl)
+      console.log('Anon key present:', !!supabaseAnonKey)
+
       const response = await fetch(`${supabaseUrl}/functions/v1/send-approval-email`, {
         method: 'POST',
         headers: {

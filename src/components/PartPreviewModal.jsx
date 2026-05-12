@@ -1,6 +1,8 @@
 import { partPreviewStyles, shared } from '../styles'
 const styles = { ...shared, ...partPreviewStyles }
 
+import PartPhotoPlaceholder from './PartPhotoPlaceholder'
+
 export default function PartPreviewModal({ part, quantity, onQuantityChange, onConfirm, onCancel }) {
   if (!part) return null
 
@@ -13,10 +15,7 @@ export default function PartPreviewModal({ part, quantity, onQuantityChange, onC
           {part.photo_url ? (
             <img src={part.photo_url} alt={part.part_number} style={styles.photo} />
           ) : (
-            <div style={styles.photoPlaceholder}>
-              <span style={styles.photoIcon}>🖼️</span>
-              <span style={styles.photoText}>No photo yet</span>
-            </div>
+            <PartPhotoPlaceholder size="large" />
           )}
         </div>
 

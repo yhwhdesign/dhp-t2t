@@ -1,5 +1,9 @@
 import { managerLoginStyles, shared, BG_URL, LOGO_URL } from '../styles'
-const styles = { ...shared, ...managerLoginStyles }
+const styles = { ...shared, ...managerLoginStyles,
+  root: shared.bgRoot,
+  overlay: shared.bgOverlay,
+  content: shared.bgContent,
+ }
 
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
@@ -93,5 +97,3 @@ export default function ManagerLogin({ onLogin, onBack }) {
     </div>
   )
 }
-
-const BG_URL = 'https://www.dhpace.com/wp-content/uploads/2017/11/distribution-logistics-doors.jpg'

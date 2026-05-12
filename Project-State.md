@@ -217,3 +217,8 @@ dhp-t2t/
 - Resend free plan limit: 100 emails/day, sends only to verified email until domain verified
 - Phone testing requires HTTPS — use Network URL from npm run dev output
 - CSS consolidation and PAGES.md doc are the final two polish tasks before deployment prep
+
+## Supabase key notes to remember
+- Supabase Edge Function JWT verification must be TURNED OFF on send-approval-email
+  function — found in Supabase Dashboard → Edge Functions → send-approval-email → settings
+  (401 Unauthorized error is the symptom when this is accidentally turned on)

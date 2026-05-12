@@ -1,6 +1,7 @@
 import { adminPanelStyles, shared, LOGO_URL } from '../styles'
 const styles = { ...shared, ...adminPanelStyles }
 
+import ActivityLogModal from '../components/ActivityLogModal'
 import { useState } from 'react'
 import AdminPendingTransfers from './AdminPendingTransfers'
 import AdminTransferHistory from './AdminTransferHistory'
@@ -29,6 +30,7 @@ const TAB_TITLES = {
 
 export default function AdminPanel({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState('pending')
+  const [showLog, setShowLog] = useState(false)
 
   return (
     <div style={styles.root}>
@@ -46,10 +48,14 @@ export default function AdminPanel({ user, onLogout }) {
             <span style={styles.userName}>{user?.name}</span>
             <span style={styles.userRole}>Manager</span>
           </div>
+          <button style={styles.logBtn} onClick={() => setShowLog(true)}>
+            📋 Log
+          </button>
           <button style={styles.logoutBtn} onClick={onLogout}>
             Sign Out
           </button>
         </div>
+        {showLog && <ActivityLogModal onClose={() => setShowLog(false)} />}
       </div>
 
       {/* Page title bar */}
