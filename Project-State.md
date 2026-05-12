@@ -113,6 +113,9 @@ left off."
 - Project folder: dhp-t2t
 - Dev server: npm run dev → https://localhost:5173
 - Phone testing: https://<your-mac-ip>:5173 (same WiFi, accept cert warning)
+- GitHub repo: dev branch → Vercel preview URL (auto-builds on every push)
+- GitHub repo: main branch → Vercel production URL (deploy by merging dev → main)
+- Vercel: connected to GitHub repo, environment variables set
 
 ## Current file structure
 dhp-t2t/
@@ -222,3 +225,55 @@ dhp-t2t/
 - Supabase Edge Function JWT verification must be TURNED OFF on send-approval-email
   function — found in Supabase Dashboard → Edge Functions → send-approval-email → settings
   (401 Unauthorized error is the symptom when this is accidentally turned on)
+
+## Stage 7 — First Run Setup Wizard + Deployment
+
+### Deployment
+- [X] Create Vercel account at vercel.com
+- [X] Connect GitHub repo to Vercel — dev branch auto-deploys to preview URL
+- [X] Set environment variables in Vercel dashboard
+- [ ] Verify Resend domain before go-live
+- [ ] Final smoke test on mobile
+
+### First Run Setup Wizard
+Each deployed instance of DHP T2T should detect if it has been initialized.
+If not, it runs a setup wizard before allowing normal app use.
+
+Setup wizard steps (in order):
+1. Welcome screen — app name, DH Pace branding
+2. Create main admin account (name, email, PIN)
+3. Set up location/warehouse info (location name, address, identifiers)
+4. Bulk parts import (Excel or CSV — part number, description, QR data)
+5. Set up tech warehouse numbers (list of valid warehouse numbers for this location)
+6. Optional — add additional managers
+7. Optional — add email recipients for daily summary
+8. Finalize setup — marks instance as initialized in Supabase
+
+### How initialization is detected
+- A settings table in Supabase with a single row
+- Contains: initialized (boolean), location_name, setup_completed_at, setup_by
+- App checks this on first load — if no row or initialized = false → show wizard
+- After wizard completes → sets initialized = true
+
+### New Supabase table needed
+- settings — id, initialized, location_name, location_address, setup_completed_at, setup_by
+
+### Bulk parts import (moved from Stage 6)
+- Accepts Excel (.xlsx) or CSV
+- Columns: part number, description, QR data
+- Shows preview table with delete icons per row
+- Imports all remaining rows to parts table
+- Used during first-run setup AND available in Manage Parts for ongoing imports
+
+### Tech warehouse numbers
+- A new table: warehouses — id, warehouse_number, location, active, created_at
+- During setup: admin enters all valid warehouse numbers for this location
+- Tech flow: instead of free-text warehouse number, tech picks from the list
+- This replaces the free-text warehouse entry on TechFlow.jsx
+
+## Open questions for Stage 7
+- Will each location have its own Supabase project or share one?
+  (Separate projects = true isolation, shared = easier management)
+- Will the Vercel URL be the same for all locations or unique per location?
+- Should the setup wizard be lockable — ie only accessible once and then hidden?
+- What warehouse/location info needs to be captured during setup?
