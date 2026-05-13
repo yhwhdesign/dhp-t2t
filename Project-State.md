@@ -96,6 +96,10 @@ left off."
 - [ ] Stage 6 — Polish, error handling, mobile optimization, PWA. IN PROGRESS.
 - [ ] Stage 7 — Deploy to Vercel. NOT STARTED.
 
+## Stage 7 build list
+- [ ] Warehouse management — admin can add, edit, deactivate warehouse numbers
+- [ ] TechFlow updated to pick from warehouse list instead of free-text
+
 ## External services
 - [X] Supabase account created — project: dhp-t2t
 - [X] Supabase tables created and confirmed working
@@ -277,3 +281,9 @@ Setup wizard steps (in order):
 - Will the Vercel URL be the same for all locations or unique per location?
 - Should the setup wizard be lockable — ie only accessible once and then hidden?
 - What warehouse/location info needs to be captured during setup?
+
+- warehouses — id, warehouse_number, location, active, created_at
+  - Admin can add, edit, and deactivate warehouse numbers
+  - Managed via a new Warehouses tab or section in Manage Users (admin only)
+  - Tech flow pulls from this table instead of free-text entry
+  - If a warehouse number is deactivated, techs can no longer select it
