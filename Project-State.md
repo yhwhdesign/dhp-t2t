@@ -97,8 +97,29 @@ left off."
 - [ ] Stage 7 — Deploy to Vercel. NOT STARTED.
 
 ## Stage 7 build list
-- [ ] Warehouse management — admin can add, edit, deactivate warehouse numbers
-- [ ] TechFlow updated to pick from warehouse list instead of free-text
+### Warehouse Management — full feature list
+- [X] warehouses table created in Supabase
+- [X] Warehouse numbers set up during first-run wizard
+- [ ] Admin can add/edit/deactivate warehouse numbers post-launch
+- [ ] Each warehouse number can have a tech name assigned to it
+- [ ] Tech flow: warehouse number entry validates against warehouses table
+      - If number not found → block with clear error message
+      - If number found → show "Welcome, [Tech Name] (WH-001)" or just WH-001 if no name set
+- [ ] TechFlow updated to pick from validated list instead of free-text
+
+### Tech name on warehouse display
+- Warehouse table gets a tech_name column (nullable)
+- Admin assigns a tech name to a warehouse number
+- When tech enters their number:
+  - Not in system → "This warehouse number is not registered. Please contact your manager."
+  - In system, no name → proceeds normally showing warehouse number only
+  - In system, has name → shows "Hi, [Tech Name] (WH-001)"
+- This also ties into future location-based filtering
+
+### Validation flow (future)
+- TechFlow checks warehouses table on submit
+- Only active warehouse numbers are accepted
+- Deactivated numbers are blocked with a message- [ ] TechFlow updated to pick from warehouse list instead of free-text
 
 ## External services
 - [X] Supabase account created — project: dhp-t2t
@@ -287,3 +308,59 @@ Setup wizard steps (in order):
   - Managed via a new Warehouses tab or section in Manage Users (admin only)
   - Tech flow pulls from this table instead of free-text entry
   - If a warehouse number is deactivated, techs can no longer select it
+
+  ## Onboarding Module — src/onboarding/
+Self-contained Supabase setup wizard for new users who don't have a database.
+Lives in src/onboarding/ — separate from main app code.
+
+### Triggered by
+Checkbox on SetupWizard Step 2: "I don't have a Supabase database yet"
+Opens SupabaseSetupModal as a full-screen modal overlay.
+
+### Two paths
+1. Developer path (DeveloperSetup.jsx)
+   - Single screen
+   - Full SQL in a code block with copy button
+   - Link to open Supabase SQL Editor in new tab
+   - Link to supabase.com to create account
+   - Done button returns to wizard Step 2
+
+2. Guided path (GuidedSetup.jsx)
+   - 5 animated steps with SVG illustrations
+   - Pulsing highlight animations showing where to click
+   - Step confirmations (checkboxes) before proceeding
+   - Friendly mobile-optimized language
+   - Steps:
+     1. StepCreateAccount — go to supabase.com, create free account
+     2. StepCreateProject — create new project, save password
+     3. StepGetCredentials — Project Settings → API → copy URL + anon key
+     4. StepRunSQL — SQL Editor → run setup script
+     5. StepComplete — done, return to wizard
+
+### Illustrations (SVG, not screenshots)
+- Abstract Supabase dashboard layouts in navy/green brand colors
+- Pulsing ring animation highlights the relevant button/area
+- Never goes stale, works on mobile, fully branded
+
+### SQL setup script (src/onboarding/sql/setup.js)
+- Complete SQL for all tables exported as a string
+- Used in both developer and guided paths
+- Includes: users, parts, transfers, transfer_items, recipients,
+  return_requests, activity_log, warehouses
+- Includes: RLS policies, role constraints, indexes
+
+### Build status
+- [ ] SupabaseSetupModal.jsx
+- [ ] DeveloperSetup.jsx
+- [ ] GuidedSetup.jsx
+- [ ] StepCreateAccount.jsx
+- [ ] StepCreateProject.jsx
+- [ ] StepGetCredentials.jsx
+- [ ] StepRunSQL.jsx
+- [ ] StepComplete.jsx
+- [ ] SupabaseDashboard.jsx (illustration)
+- [ ] SupabaseProject.jsx (illustration)
+- [ ] SupabaseAPI.jsx (illustration)
+- [ ] SupabaseSQL.jsx (illustration)
+- [ ] setup.js (SQL script)
+- [ ] SetupWizard.jsx Step 2 updated with checkbox

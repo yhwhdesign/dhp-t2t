@@ -14,6 +14,8 @@ export default function App() {
   useEffect(() => {
     async function init() {
       const cfg = await loadConfig()
+      //console.log('Config loaded:', cfg)
+      //console.log('Setup complete:', cfg.setupComplete)
       setConfig(cfg)
       if (!cfg.setupComplete) {
         setScreen('setup')

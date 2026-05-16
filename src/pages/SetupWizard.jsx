@@ -45,6 +45,21 @@ export default function SetupWizard({ onComplete }) {
 
   function nextStep() {
     setError('')
+
+    if (step === 3) {
+      if (!adminName.trim() || !adminEmail.trim() || !adminPin.trim()) {
+        setError('Please fill in all admin account fields.')
+        return
+      }
+    }
+
+    if (step === 4) {
+      if (!locationName.trim()) {
+        setError('Please enter a location name.')
+        return
+      }
+    }
+
     setStep(s => Math.min(s + 1, TOTAL_STEPS))
   }
 
@@ -241,7 +256,7 @@ export default function SetupWizard({ onComplete }) {
                 <label style={styles.label}>Company Name *</label>
                 <input
                   style={styles.input}
-                  placeholder="e.g. DH Pace"
+                  placeholder="e.g. Company Name"
                   value={companyName}
                   onChange={e => setCompanyName(e.target.value)}
                 />
@@ -380,7 +395,7 @@ export default function SetupWizard({ onComplete }) {
                 <label style={styles.label}>Location Name *</label>
                 <input
                   style={styles.input}
-                  placeholder="e.g. Kansas City Branch"
+                  placeholder="Little Rock Location ( LIT )"
                   value={locationName}
                   onChange={e => setLocationName(e.target.value)}
                 />
@@ -432,15 +447,29 @@ export default function SetupWizard({ onComplete }) {
               <div style={styles.field}>
                 <label style={styles.label}>Parts File (Excel or CSV)</label>
                 <p style={styles.fieldHint}>Columns: Part Number, Description, QR Data</p>
-                <label style={styles.fileUploadBtn}>
-                  📂 Choose File
-                  <input
-                    type="file"
-                    accept=".xlsx,.xls,.csv"
-                    style={{ display: 'none' }}
-                    onChange={handlePartsFile}
-                  />
-                </label>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <label style={styles.fileUploadBtn}>
+                    📂 {partsFile ? 'Change File' : 'Choose File'}
+                    <input
+                      type="file"
+                      accept=".xlsx,.xls,.csv"
+                      style={{ display: 'none' }}
+                      onChange={handlePartsFile}
+                    />
+                  </label>
+                  {partsFile && (
+                    <button
+                      style={styles.clearFileBtn}
+                      onClick={() => {
+                        setPartsFile(null)
+                        setPartsPreview([])
+                        setPartsError('')
+                      }}
+                    >
+                      ✕ Clear
+                    </button>
+                  )}
+                </div>
                 {partsFile && (
                   <p style={styles.fileName}>{partsFile.name} — {partsPreview.length} parts found</p>
                 )}
@@ -591,8 +620,7 @@ export default function SetupWizard({ onComplete }) {
               disabled={step === 2 && !dbTested}
             >
               {step === 5 ? (partsPreview.length > 0 ? 'Import & Continue →' : 'Skip →') :
-               step === 6 ? (recipientEmail ? 'Save & Continue →' : 'Skip →') :
-               'Continue →'}
+               step === 6 ? 'Continue →' : 'Next →'}
             </button>
           )}
         </div>
@@ -914,6 +942,17 @@ const styles = {
     borderRadius: 8,
     fontSize: 14,
     fontWeight: 700,
+    cursor: 'pointer',
+  },
+
+  clearFileBtn: {
+    padding: '10px 16px',
+    background: '#fee2e2',
+    color: '#dc2626',
+    border: 'none',
+    borderRadius: 8,
+    fontSize: 13,
+    fontWeight: 600,
     cursor: 'pointer',
   },
 }
